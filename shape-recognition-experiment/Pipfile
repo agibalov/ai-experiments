@@ -11,6 +11,9 @@ numpy = "*"
 pandas = "*"
 matplotlib = "*"
 jupyter = "*"
+pillow = "*"
+opencv-python = "==4.1.0.25"
+opencv-contrib-python = "*"
 
 [requires]
 python_version = "3.7"
