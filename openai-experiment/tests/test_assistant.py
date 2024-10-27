@@ -1,8 +1,7 @@
 from openai import OpenAI
-from typing import cast
-client = OpenAI()
 
 def test_assistant():
+    client = OpenAI()
     assistant = client.beta.assistants.create(
         name="Math Tutor",
         instructions="You are a personal math tutor. Write and run code to answer math questions.",
