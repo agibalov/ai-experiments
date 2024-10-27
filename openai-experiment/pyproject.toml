@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "openai-experiment"
+version = "0.1.0"
+description = ""
+authors = ["Andrey Agibalov <andrey.agibalov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "^1.52.2"
+
+[tool.poetry.scripts]
+app = "openai_experiment:main"
+test = "pytest:main"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+
+[tool.pytest.ini_options]
+addopts = "-s"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
