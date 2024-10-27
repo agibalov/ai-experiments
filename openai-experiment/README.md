@@ -17,3 +17,4 @@ An OpenAI hello world.
   * `poetry run test tests/test_functions.py` to run tests where AI calls a function in my code
   * `poetry run test tests/test_extract_event_details.py` extract event details from text (model provides a structured response)
   * `poetry run test tests/test_named_entity_recognition.py` extract people, dates and places from text (model provides a structured response)
+  * `poetry run test tests/test_sentiment_analysis.py` sentiment analysis (model provides a structured response)
