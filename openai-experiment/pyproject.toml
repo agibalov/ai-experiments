@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 openai = "^1.52.2"
+pydantic = "^2.9.2"
 
 [tool.poetry.scripts]
 app = "openai_experiment:main"
