@@ -1,13 +1,18 @@
 from openai import OpenAI
+from .fixtures import client
+import pytest
 
-def test_assistant():
-    client = OpenAI()
+@pytest.fixture
+def assistant(client):
     assistant = client.beta.assistants.create(
         name="Math Tutor",
         instructions="You are a personal math tutor. Write and run code to answer math questions.",
         tools=[{"type": "code_interpreter"}],
         model="gpt-4o")
+    yield assistant
+    client.beta.assistants.delete(assistant.id)
 
+def test_assistant(client, assistant):
     thread = client.beta.threads.create()
 
     message = client.beta.threads.messages.create(
