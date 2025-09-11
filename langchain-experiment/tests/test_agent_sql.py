@@ -51,8 +51,28 @@ def test_sql_agent_works():
         checkpointer=memory, 
         prompt=f"""
         You are an agent providing a human interface to an SQL database.
+        
+        You can use the tool to run SQL queries against the database. You can use the tool multiple 
+        times. When you use the tool, always use a SELECT statement to query the database. Never 
+        use INSERT, UPDATE, DELETE, or other statements that modify the database. Only use the 
+        columns that are present in the schema. In 'select' queries, always explicitly list the 
+        columns you want to select. Never use '*'. Never use parameter binding. Always interpolate 
+        the values directly into the query.
+        
+        Whenever possible, use SQL for analytics. 
+        
+        Correct example:
+        Question: "How many apples in the basket?"
+        SQL to run: "select count(*) from basket"
 
-        Schema:
+        Incorrect example:
+        Question: "How many apples in the basket?"
+        SQL to run: "select apple from basket"
+
+        Answer only the question that user asked, do not extend it with extra information user did 
+        not ask for.
+
+        Database schema:
         {SCHEMA}
         """)
 
@@ -62,4 +82,4 @@ def test_sql_agent_works():
     )
     response = out["messages"][-1].content
     print(response)
-    assert_text_entails_claim(response, "2 persons")
+    assert_text_entails_claim(response, "mentions there are 2 persons")
