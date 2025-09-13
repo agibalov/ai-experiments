@@ -4,6 +4,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.tools import ToolException, BaseTool
 from langchain_core.messages import HumanMessage
+from langgraph.graph.state import CompiledStateGraph
 from pydantic import BaseModel, Field
 import sqlite3
 import pytest
@@ -62,13 +63,23 @@ def make_db():
                     (3, "Charlie", 45)])
     return conn    
 
-@pytest.mark.parametrize("model_name",
-    ["ollama:llama3.2:3b", "ollama:gpt-oss:20b"],
-    ids=lambda v: "model_" + v.replace(":", "_").replace(".", "_").replace("-", "_")
-)
-@pytest.mark.parametrize("temp", [0.0, 0.2, 0.6, 1.0], ids=lambda v: f"temp_{v:g}".replace(".", "_"))
-@pytest.mark.parametrize("seed", [0, 1337, 2302, 31337], ids=lambda v: f"seed_{v}")
-def test_sql_agent_works(model_name: str, temp: float, seed: int):
+@pytest.fixture(params=["ollama:llama3.2:3b", "ollama:gpt-oss:20b"],
+                ids=lambda v: "model_" + v.replace(":", "_").replace(".", "_").replace("-", "_"))
+def model_name(request) -> str:
+    return request.param
+
+@pytest.fixture(params=[0.0, 0.2, 0.6, 1.0], 
+                ids=lambda v: f"temp_{v:g}".replace(".", "_"))
+def temp(request) -> float:
+    return request.param
+
+@pytest.fixture(params=[0, 1337, 2302, 31337], 
+                ids=lambda v: f"seed_{v}")
+def seed(request) -> int:
+    return request.param
+
+@pytest.fixture
+def agent(model_name: str, temp: float, seed: int) -> CompiledStateGraph:
     conn = make_db()       
     database_tool = DatabaseTool(conn=conn)
     
@@ -80,7 +91,9 @@ def test_sql_agent_works(model_name: str, temp: float, seed: int):
         tools, 
         checkpointer=memory, 
         prompt=AGENT_PROMPT)
-    
+    return agent
+
+def test_count_persons_older_than_30(agent: CompiledStateGraph):
     out = agent.invoke(
         {"messages": [HumanMessage("How many persons are older than 30?")]},
         config={"configurable": {"thread_id": f"andrey-1"}}, 
@@ -91,6 +104,7 @@ def test_sql_agent_works(model_name: str, temp: float, seed: int):
     assert_text_entails_claim(response, "text contains number 2 or word 'two'")
     pretty_agent_output(out)
 
+def test_average_age(agent: CompiledStateGraph):
     out = agent.invoke(
         {"messages": [HumanMessage("What's the average age of a person?")]},
         config={"configurable": {"thread_id": f"andrey-1"}}, 
@@ -100,6 +114,7 @@ def test_sql_agent_works(model_name: str, temp: float, seed: int):
     print(f"Response: {response}")
     assert_text_entails_claim(response, "text contains number 35 or word 'thirty five'")
 
+def test_name_of_oldest_person(agent: CompiledStateGraph):
     out = agent.invoke(
         {"messages": [HumanMessage("What's the name of the oldest person?")]},
         config={"configurable": {"thread_id": f"andrey-1"}}, 
