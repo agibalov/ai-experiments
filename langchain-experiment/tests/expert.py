@@ -63,7 +63,8 @@ JSON only; no extra keys, no prose, no code fences.
 {format_instructions}
 """)
 
-    model = init_chat_model("ollama:llama3.2:3b", temperature=0)
+    #model = init_chat_model("ollama:llama3.2:3b", temperature=0)
+    model = init_chat_model("ollama:gpt-oss:20b", temperature=0)
     base_parser = PydanticOutputParser(pydantic_object=TextTestResult)
     fixing_parser = OutputFixingParser.from_llm(parser=base_parser, llm=model)
     retry_parser = RetryWithErrorOutputParser.from_llm(parser=fixing_parser, llm=model)
