@@ -80,7 +80,7 @@ def seed(request) -> int:
 
 @pytest.fixture
 def agent(model_name: str, temp: float, seed: int) -> CompiledStateGraph:
-    conn = make_db()       
+    conn = make_db()
     database_tool = DatabaseTool(conn=conn)
     
     memory = MemorySaver()
