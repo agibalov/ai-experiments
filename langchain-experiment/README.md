@@ -46,6 +46,7 @@ Learning [LangChain](https://www.langchain.com/).
 | tests/test_agent_sql.py | test_count_customers         | model_ollama_gpt_oss_20b-temp_1-seed_1337    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customers         | model_ollama_gpt_oss_20b-temp_1-seed_2302    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customers         | model_ollama_gpt_oss_20b-temp_1-seed_31337   |      1 |      0 |        1 |
+| tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_1-seed_2302    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_0-seed_0       |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_0-seed_1337    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_0-seed_2302    |      1 |      0 |        1 |
@@ -62,7 +63,6 @@ Learning [LangChain](https://www.langchain.com/).
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_1-seed_1337    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_1-seed_2302    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_gpt_oss_20b-temp_1-seed_31337   |      1 |      0 |        1 |
-| tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0_6-seed_31337 |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_gpt_oss_20b-temp_0-seed_0       |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_gpt_oss_20b-temp_0-seed_1337    |      1 |      0 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_gpt_oss_20b-temp_0-seed_2302    |      1 |      0 |        1 |
@@ -93,7 +93,6 @@ Learning [LangChain](https://www.langchain.com/).
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_0_6-seed_31337 |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_1-seed_0       |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_1-seed_1337    |      0 |      1 |        1 |
-| tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_1-seed_2302    |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_count_customer_invoices | model_ollama_llama3_2_3b-temp_1-seed_31337   |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0-seed_0       |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0-seed_1337    |      0 |      1 |        1 |
@@ -106,6 +105,7 @@ Learning [LangChain](https://www.langchain.com/).
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0_6-seed_0     |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0_6-seed_1337  |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0_6-seed_2302  |      0 |      1 |        1 |
+| tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_0_6-seed_31337 |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_1-seed_0       |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_1-seed_1337    |      0 |      1 |        1 |
 | tests/test_agent_sql.py | test_find_top_3_customers    | model_ollama_llama3_2_3b-temp_1-seed_2302    |      0 |      1 |        1 |
