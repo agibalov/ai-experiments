@@ -5,9 +5,10 @@ from langchain_core.messages import HumanMessage
 from playwright.async_api import async_playwright
 from debug_utils import pretty_agent_output
 import pytest
+import pytest_asyncio
 
-@pytest.mark.asyncio
-async def test_it_works():
+@pytest_asyncio.fixture
+async def agent():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         ctx = await browser.new_context()
@@ -20,13 +21,30 @@ async def test_it_works():
                 model.bind_tools(tools), 
                 tools)
 
-            out = await agent.ainvoke({"messages": [
-                #HumanMessage("What's the page title of https://example.com?")
-                HumanMessage("In 2 sentences, what agibalov.io is about?")
-                ]})
-            pretty_agent_output(out)
-            print(out["messages"][-1].content)
-        
+            yield agent
+
         finally:
             await ctx.close()
             await browser.close()
+
+@pytest.mark.asyncio
+async def test_can_get_page_title(agent):
+    out = await agent.ainvoke({"messages": [
+        HumanMessage("What's the page title of https://example.com?")
+        ]})
+    pretty_agent_output(out)
+    
+    content = out["messages"][-1].content
+    print(content)
+    assert content != ''
+
+@pytest.mark.asyncio
+async def test_can_get_page_summary(agent):
+    out = await agent.ainvoke({"messages": [
+        HumanMessage("In 2 sentences, what is agibalov.io about?")
+        ]})
+    pretty_agent_output(out)
+    
+    content = out["messages"][-1].content
+    print(content)
+    assert content != ''
