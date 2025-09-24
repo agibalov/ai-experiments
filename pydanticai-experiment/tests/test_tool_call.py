@@ -1,4 +1,4 @@
-from pydantic_ai import RunContext
+from pydantic_ai import ModelSettings
 from pydantic_ai.agent import Agent
 from pydantic_ai.messages import (
     FinalResultEvent,
@@ -9,27 +9,63 @@ from pydantic_ai.messages import (
     TextPartDelta,
     ThinkingPartDelta,
     ToolCallPartDelta,
+    ToolCallPart
 )
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.ollama import OllamaProvider
+import pytest
 
-async def test_tool_call():
+@pytest.fixture
+def agent():
     model = OpenAIChatModel(
         model_name='gpt-oss:20b',
         provider=OllamaProvider(base_url='http://localhost:11434/v1'),
+        settings=ModelSettings(temperature=0.0)
     )
-    agent = Agent(model=model, system_prompt="Use `add_numbers` to add two numbers.")
 
-    @agent.tool
-    async def add_numbers(ctx: RunContext[int], a: int, b: int) -> int:
+    async def add_numbers(a: int, b: int) -> int:
         """Add two numbers."""
         return a + b
 
+    agent = Agent(
+        model=model,
+        tools=[add_numbers],
+        output_type=[int, str],
+        system_prompt="""
+        Use `add_numbers` to add two numbers. Return a number on success,
+        or a string if you cannot perform the addition.""")
+
+    return agent
+
+@pytest.mark.asyncio
+async def test_tool_call_success(agent):
     async with agent.iter("give me a sum of 2, 3 and 88") as agent_run:
         await print_run(agent_run)
 
-    print(f"Agent says: {agent_run.result.output}")
-    assert agent_run.result.output != ''
+    result = agent_run.result.output
+    print(f"Agent says ({type(result)}): {result}")
+
+    tool_call_count = 0
+    for m in agent_run.result.all_messages():
+        if m.parts:
+            for p in m.parts:
+                if isinstance(p, ToolCallPart):
+                    print(f"Tool call: {p.tool_name}({p.args})")
+                    tool_call_count += 1
+
+    assert isinstance(result, int)
+    assert result == 93
+    assert tool_call_count >= 2
+
+@pytest.mark.asyncio
+async def test_tool_call_error(agent):
+    async with agent.iter("give me a sandwich") as agent_run:
+        await print_run(agent_run)
+
+    result = agent_run.result.output
+    print(f"Agent says ({type(result)}): {result}")
+
+    assert isinstance(result, str)
 
 async def print_run(run):
     async for node in run:
@@ -54,8 +90,10 @@ async def print_run(run):
                         final_result_found = True
                         break
                 if final_result_found:
-                    async for output in request_stream.stream_text():
-                        print(f'[Output] {output}')
+                    output = None
+                    async for o in request_stream.stream_text():
+                        output = o
+                    print(f"\r[Output] {output}")
         elif Agent.is_call_tools_node(node):
             print('=== CallToolsNode: streaming partial response & tool usage ===')
             async with node.stream(run.ctx) as handle_stream:
