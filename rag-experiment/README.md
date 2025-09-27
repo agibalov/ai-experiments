@@ -1,7 +1,7 @@
 # rag-experiment
 
-TODO
+Figuring out retrieval-augmented generation (RAG).
 
 ## How to do things
 
-TODO
+* `uv run pytest` to run tests.
