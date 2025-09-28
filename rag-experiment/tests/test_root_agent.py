@@ -33,42 +33,39 @@ def agent() -> RootAgent:
 
 def test_food(agent: RootAgent):
     response = agent.respond("I need to cook some food. What should I do?")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is True
 
 def test_programming_languages(agent: RootAgent):
     response = agent.respond("what are some general-purpose programming languages?")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is True
 
 def test_python_and_java(agent: RootAgent):
     response = agent.respond("compare python and java")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is False
 
 def test_better_programmer(agent: RootAgent):
     response = agent.respond("how do I become a better programmer?")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is False
 
 def test_rebel1(agent: RootAgent):
     response = agent.respond("how often should I change the oil in my rebel 500?")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is True
 
 def test_rebel2(agent: RootAgent):
     response = agent.respond("anything I should keep in mind when changing motor oil?")
-    print(f"Found Answer: {response.found_answer}")
-    print(f"Answer: {response.answer}")
+    print_response(response)
     assert response.found_answer is True
 
 def test_rebel3(agent: RootAgent):
     response = agent.respond("give me an example of a motorcycle")
+    print_response(response)
+    assert response.found_answer is True
+
+def print_response(response):
     print(f"Found Answer: {response.found_answer}")
     print(f"Answer: {response.answer}")
-    assert response.found_answer is True
