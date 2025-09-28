@@ -4,10 +4,9 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from pathlib import Path
 from typing import List
-import tiktoken
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from dataclasses import dataclass
 
+from rag_experiment.chunker import chunk_text
 
 
 @dataclass
@@ -19,11 +18,8 @@ class SourceDocument:
 @dataclass
 class DocumentChunk:
     source_file: str
-    chunk_index: int
-    total_chunks: int
     content: str
-    char_count: int
-    token_count: int
+
 
 def load_docs(docs_dir: str) -> List[SourceDocument]:
     docs_path = Path(docs_dir)
@@ -41,46 +37,21 @@ def load_docs(docs_dir: str) -> List[SourceDocument]:
     return markdown_files
 
 
-def chunk_text(text: str, max_tokens: int, overlap_tokens: int) -> List[str]:
-    encoding = tiktoken.get_encoding("cl100k_base")
-
-    def tiktoken_len(text: str) -> int:
-        return len(encoding.encode(text))
-
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=max_tokens,
-        chunk_overlap=overlap_tokens,
-        length_function=tiktoken_len,
-        separators=["\n\n", "\n", " ", ""]
-    )
-
-    chunks = text_splitter.split_text(text)
-    return [chunk.strip() for chunk in chunks if chunk.strip()]
-
-
 def chunk_docs(docs: List[SourceDocument],
                max_tokens: int,
                overlap_tokens: int) -> List[DocumentChunk]:
 
     doc_chunks = []
-    encoding = tiktoken.get_encoding("cl100k_base")
-
     for doc in docs:
         normalized_content = '\n'.join(line.strip() for line in doc.content.split('\n') if line.strip())
         if not normalized_content:
             continue
 
         chunks = chunk_text(normalized_content, max_tokens, overlap_tokens)
-        for i, chunk in enumerate(chunks):
-            token_count = len(encoding.encode(chunk))
-
+        for chunk in chunks:
             doc_chunk = DocumentChunk(
                 source_file=doc.filename,
-                chunk_index=i,
-                total_chunks=len(chunks),
-                content=chunk,
-                char_count=len(chunk),
-                token_count=token_count
+                content=chunk
             )
             doc_chunks.append(doc_chunk)
 
@@ -89,14 +60,15 @@ def chunk_docs(docs: List[SourceDocument],
 def create_schema(conn: sqlite3.Connection):
     with closing(conn.cursor()) as cur:
         cur.execute("""
-        CREATE TABLE IF NOT EXISTS chunks (
+        CREATE TABLE chunks (
             id INTEGER PRIMARY KEY,
-            content TEXT NOT NULL
+            content TEXT NOT NULL,
+            source TEXT NOT NULL
         )
         """)
 
         cur.execute("""
-        CREATE VIRTUAL TABLE IF NOT EXISTS embeddings USING vec0(
+        CREATE VIRTUAL TABLE embeddings USING vec0(
             doc_id INTEGER,
             embedding FLOAT[384]
         )
@@ -104,20 +76,17 @@ def create_schema(conn: sqlite3.Connection):
         conn.commit()
 
 def ingest_docs(conn: sqlite3.Connection,
-                docs: List[SourceDocument],
-                max_tokens: int,
-                overlap_tokens: int,
+                chunks: List[DocumentChunk],
                 encoder: SentenceTransformer):
 
-    chunks = chunk_docs(docs, max_tokens, overlap_tokens)
     chunk_contents = [chunk.content for chunk in chunks]
     embeddings = encoder.encode(chunk_contents)
 
     with closing(conn.cursor()) as cur:
         for id, (chunk, emb) in enumerate(zip(chunks, embeddings)):
             cur.execute(
-                "INSERT INTO chunks (id, content) VALUES (?, ?)",
-                (id, chunk.content)
+                "INSERT INTO chunks (id, content, source) VALUES (?, ?, ?)",
+                (id, chunk.content, chunk.source_file)
             )
 
             blob = np.asarray(emb, dtype=np.float32).tobytes()

@@ -64,5 +64,3 @@ Here’s a practical step-by-step guide for changing the motor oil on a **Honda 
 ---
 
 ⚠️ Tip: Do **not** overtighten the oil filter or drain bolt—stripped threads or stuck filters are a common mistake.
-
-Do you want me to also make a **Markdown “maintenance cheat sheet”** for the Rebel 500 (oil, chain, brakes, tire pressures) so you have it handy for your RAG experiments?

@@ -1,15 +1,17 @@
 import sqlite3
+import pytest
 import sqlite_vec
 from sentence_transformers import SentenceTransformer
 
 from rag_experiment.context_based_answering_agent import ContextBasedAnsweringAgent
-from rag_experiment.mess import create_schema, ingest_docs, load_docs
+from rag_experiment.ingestion import chunk_docs, create_schema, ingest_docs, load_docs
 from rag_experiment.query_context_provider import QueryContextProvider
 from rag_experiment.root_agent import RootAgent
 from rag_experiment.text_relevance_checker import TextRelevanceChecker
 
 
-def make_root_agent() -> RootAgent:
+@pytest.fixture(scope="module")
+def agent() -> RootAgent:
     conn = sqlite3.connect(":memory:")
     conn.enable_load_extension(True)
     sqlite_vec.load(conn)
@@ -19,7 +21,8 @@ def make_root_agent() -> RootAgent:
     encoder = SentenceTransformer("all-MiniLM-L6-v2")
 
     docs = load_docs("docs")
-    ingest_docs(conn, docs, max_tokens=500, overlap_tokens=100, encoder=encoder)
+    chunks = chunk_docs(docs, max_tokens=500, overlap_tokens=100)
+    ingest_docs(conn, chunks, encoder)
 
     context_based_answering_agent = ContextBasedAnsweringAgent()
     text_relevance_checker = TextRelevanceChecker()
@@ -28,15 +31,44 @@ def make_root_agent() -> RootAgent:
         context_based_answering_agent=context_based_answering_agent,
         query_context_provider=query_context_provider)
 
-def test_hello():
-    agent = make_root_agent()
+def test_food(agent: RootAgent):
+    response = agent.respond("I need to cook some food. What should I do?")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is True
 
-    for query_text in ["i need to cook some food. what should I do?",
-                       "how do I become a better programmer?",
-                       "what are some general-purpose programming languages?",
-                       "compare python and java"]:
+def test_programming_languages(agent: RootAgent):
+    response = agent.respond("what are some general-purpose programming languages?")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is True
 
-        response = agent.respond(query_text)
-        print(f"Found Answer: {response.found_answer}")
-        print(f"Answer: {response.answer}")
-        print("\n\n")
+def test_python_and_java(agent: RootAgent):
+    response = agent.respond("compare python and java")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is False
+
+def test_better_programmer(agent: RootAgent):
+    response = agent.respond("how do I become a better programmer?")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is False
+
+def test_rebel1(agent: RootAgent):
+    response = agent.respond("how often should I change the oil in my rebel 500?")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is True
+
+def test_rebel2(agent: RootAgent):
+    response = agent.respond("anything I should keep in mind when changing motor oil?")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is True
+
+def test_rebel3(agent: RootAgent):
+    response = agent.respond("give me an example of a motorcycle")
+    print(f"Found Answer: {response.found_answer}")
+    print(f"Answer: {response.answer}")
+    assert response.found_answer is True

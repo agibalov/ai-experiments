@@ -33,7 +33,3 @@ def greet(name: str) -> None:
 
 greet("Andrey")
 ```
-
----
-
-Would you like me to make you a **short “cheat sheet” style Markdown file** (with syntax, common data types, control flow, and examples) that you could actually use as a mini knowledge base for experiments?

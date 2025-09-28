@@ -13,5 +13,3 @@ Java is a **general-purpose, object-oriented programming language** and also the
   * Huge ecosystem of frameworks (Spring, Hibernate, etc.).
 
 👉 In short: **Java is both a programming language and a platform** used to build portable, scalable applications.
-
-Would you like me to show you a **tiny Java code example** (like “Hello, world”)?
