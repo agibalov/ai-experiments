@@ -1,0 +1,20 @@
+[project]
+name = "vlm-experiment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "accelerate>=1.10.1",
+    "bitsandbytes>=0.47.0",
+    "ollama>=0.6.0",
+    "pillow>=11.3.0",
+    "pydantic-ai>=1.0.11",
+    "pytest>=8.4.2",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "transformers>=4.56.2",
+]
+
+[tool.pytest.ini_options]
+addopts = "-s -v"
