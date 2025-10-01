@@ -590,6 +590,8 @@ dependencies = [
     { name = "llama-index-embeddings-ollama" },
     { name = "llama-index-llms-ollama" },
     { name = "llama-index-readers-file" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
 ]
 
 [package.metadata]
@@ -598,6 +600,8 @@ requires-dist = [
     { name = "llama-index-embeddings-ollama", specifier = ">=0.1.0" },
     { name = "llama-index-llms-ollama", specifier = ">=0.1.0" },
     { name = "llama-index-readers-file", specifier = ">=0.1.0" },
+    { name = "pytest", specifier = ">=8.4.2" },
+    { name = "pytest-asyncio", specifier = ">=1.2.0" },
 ]
 
 [[package]]

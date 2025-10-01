@@ -4,4 +4,5 @@ A Llama Index hello world.
 
 ## How to do things
 
-TODO
+* `uv run pytest` to run tests.
+
