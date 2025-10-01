@@ -1,0 +1,18 @@
+[project]
+name = "llama-index-experiment"
+version = "0.1.0"
+description = "Llama Index hello world"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "llama-index>=0.10.0",
+    "llama-index-readers-file>=0.1.0",
+    "llama-index-llms-ollama>=0.1.0",
+    "llama-index-embeddings-ollama>=0.1.0",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "llama-index-tools-yahoo-finance>=0.4.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "-s -v --disable-warnings"
