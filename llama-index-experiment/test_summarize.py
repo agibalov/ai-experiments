@@ -19,6 +19,7 @@ def make_query_engine(docs_reader: SimpleDirectoryReader) -> BaseQueryEngine:
     return index.as_query_engine(response_mode="tree_summarize", llm=llm)
 
 async def run(query_engine: BaseQueryEngine, query: str):
+    print("-" * 40)
     print("Query:", query)
     response = await query_engine.aquery(query)
     print("Response:", response)
