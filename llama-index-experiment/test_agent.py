@@ -1,5 +1,6 @@
 from llama_index.llms.ollama import Ollama
 from llama_index.core.agent.workflow import FunctionAgent
+from llama_index.tools.yahoo_finance import YahooFinanceToolSpec
 import pytest
 
 
@@ -16,12 +17,10 @@ async def test_agent():
         return a * b
 
     agent = FunctionAgent(
-        tools=[multiply],
+        tools=[multiply] + YahooFinanceToolSpec().to_tool_list(),
         llm=llm,
-        system_prompt="You are a helpful assistant that can multiply two numbers.",
+        system_prompt="You are a helpful assistant that can multiply two numbers."
     )
 
-    response = await agent.run("What is 1234 * 4567?")
+    response = await agent.run("What is 1234 * 4567? Also what is the price of GOOGL?")
     print(response)
-
-    # TODO: assert

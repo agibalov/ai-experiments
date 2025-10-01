@@ -38,5 +38,3 @@ def test_query_engine():
 
     for i, source in enumerate(response.source_nodes, 1):
         print(f"Source {i}: {source.node.metadata.get('file_name', 'Unknown')} (relevance: {getattr(source, 'score', 'N/A')})")
-
-    # TODO: assert
