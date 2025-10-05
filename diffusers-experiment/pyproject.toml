@@ -1,0 +1,13 @@
+[project]
+name = "diffusers-experiment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "accelerate==0.34.2",
+    "diffusers==0.31.0",
+    "pytest>=8.4.2",
+    "safetensors==0.4.5",
+    "transformers==4.45.2",
+]
