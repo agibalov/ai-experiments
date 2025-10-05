@@ -8,6 +8,10 @@ dependencies = [
     "accelerate==0.34.2",
     "diffusers==0.31.0",
     "pytest>=8.4.2",
+    "ruff>=0.13.3",
     "safetensors==0.4.5",
     "transformers==4.45.2",
 ]
+
+[tool.pytest.ini_options]
+addopts = "-s -v"
