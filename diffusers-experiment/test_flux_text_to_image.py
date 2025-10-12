@@ -42,7 +42,6 @@ def run_flux(model: str, image_file: str) -> None:
 
     image.save(image_file)
 
-    # Cleanup
     del pipe
     torch.cuda.empty_cache()
     gc.collect()
