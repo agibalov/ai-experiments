@@ -26,4 +26,4 @@ def test_it_works():
     comfyui_free_memory()
 
     result = check_image_statement(image, "There is a huge fat tabby cat sitting on a wooden table.")
-    assert result.correct
+    assert result.correct, result.correct_reasoning
