@@ -1,6 +1,7 @@
 from comfy_script.runtime import load, nodes
 
-from .tools import save_images
+from tests.judge import check_image_statement
+from tests.tools import comfyui_free_memory
 
 
 def make_flux_t2i_workflow(prompt: str):
@@ -16,5 +17,10 @@ def make_flux_t2i_workflow(prompt: str):
 def test_it_works():
     load()
     save = make_flux_t2i_workflow(prompt="Huge fat tabby cat sitting on a wooden table")
-    result = save.wait()
-    save_images(result=result, prefix="cat_flux_")
+    image = save.wait().wait()[0]
+    image.save("cat_sd.png")
+
+    comfyui_free_memory()
+
+    result = check_image_statement(image, "There is a huge fat tabby cat sitting on a wooden table.")
+    assert result.correct
