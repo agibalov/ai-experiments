@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-experiment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.13.0",
+    "comfy-script>=0.5.1",
+    "nest-asyncio>=1.6.0",
+    "pillow>=11.3.0",
+    "requests>=2.32.5",
+    "tqdm>=4.67.1",
+    "websocket-client>=1.9.0",
+]
