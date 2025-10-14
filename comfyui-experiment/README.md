@@ -33,4 +33,4 @@ uv pip install -e "./ComfyUI/custom_nodes/ComfyScript[default]"
 ## How to do things
 
 * `cd ~/ComfyUI-Workspace && uv run comfy --here launch` to launch ComfyUI.
-* `uv run python main.py` to run the app.
+* `uv run pytest` to run the app.

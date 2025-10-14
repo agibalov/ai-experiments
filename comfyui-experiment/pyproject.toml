@@ -9,7 +9,11 @@ dependencies = [
     "comfy-script>=0.5.1",
     "nest-asyncio>=1.6.0",
     "pillow>=11.3.0",
+    "pytest>=8.4.2",
     "requests>=2.32.5",
     "tqdm>=4.67.1",
     "websocket-client>=1.9.0",
 ]
+
+[tool.pytest.ini_options]
+addopts = "-s -v"
