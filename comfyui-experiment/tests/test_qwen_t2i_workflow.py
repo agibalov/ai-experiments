@@ -20,7 +20,7 @@ def test_it_works():
     load()
     save = make_qwen_t2i_workflow(prompt="Huge fat tabby cat sitting on a wooden table")
     image = save.wait().wait()[0]
-    image.save("cat_sd.png")
+    image.save("cat_qwen.png")
 
     comfyui_free_memory()
 

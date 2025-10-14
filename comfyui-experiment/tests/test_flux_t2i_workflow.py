@@ -18,7 +18,7 @@ def test_it_works():
     load()
     save = make_flux_t2i_workflow(prompt="Huge fat tabby cat sitting on a wooden table")
     image = save.wait().wait()[0]
-    image.save("cat_sd.png")
+    image.save("cat_flux.png")
 
     comfyui_free_memory()
 

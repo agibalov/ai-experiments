@@ -21,7 +21,7 @@ def test_it_works():
         prompt="Huge fat tabby cat sitting on a wooden table", 
         negative_prompt="text, watermark")
     image = save.wait().wait()[0]
-    image.save("cat_sd.png")
+    image.save("cat_sdxl.png")
 
     comfyui_free_memory()
 
