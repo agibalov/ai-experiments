@@ -30,6 +30,15 @@ git clone https://github.com/Chaoses-Ib/ComfyScript.git ./ComfyUI/custom_nodes/C
 uv pip install -e "./ComfyUI/custom_nodes/ComfyScript[default]"
 ```
 
+### ComfyUI API Tools
+
+Install ComfyUI API Tools
+
+```
+cd ~/ComfyUI-Workspace
+git clone https://github.com/brantje/ComfyUI-api-tools ./ComfyUI/custom_nodes/ComfyUI-api-tools
+```
+
 ## How to do things
 
 * `cd ~/ComfyUI-Workspace && uv run comfy --here launch` to launch ComfyUI.

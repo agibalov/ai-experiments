@@ -1,6 +1,6 @@
 from comfy_script.runtime import load
 
-from tests.tools import comfyui_free_memory, parameterize_workflow, run_video_workflow
+from tests.comfyui_client import comfyui_free_memory, parameterize_workflow, run_video_workflow
 
 
 def test_it_works():
@@ -18,7 +18,7 @@ def test_it_works():
     
     run_video_workflow(
         workflow_prompt, 
-        "cat_wan_t2i.mp4"
+        "cat_wan_t2v.mp4"
     )    
     
     comfyui_free_memory()

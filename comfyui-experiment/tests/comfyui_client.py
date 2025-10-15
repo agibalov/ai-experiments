@@ -2,6 +2,7 @@ import time
 import requests
 import json
 import os
+import uuid
 
 
 def download_comfyui_output(filename, subfolder="", output_dir=".", local_filename=None, base_url="http://127.0.0.1:8188"):
@@ -20,6 +21,24 @@ def download_comfyui_output(filename, subfolder="", output_dir=".", local_filena
         f.write(response.content)
     
     return local_path
+
+def upload_image_to_comfyui(image, base_url="http://127.0.0.1:8188"):
+    import io
+    random_name = f"{uuid.uuid4().hex}.png"
+    
+    img_bytes = io.BytesIO()
+    image.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+    
+    files = {'image': (random_name, img_bytes, 'image/png')}
+    response = requests.post(f"{base_url}/upload/image", files=files)
+    response.raise_for_status()
+    
+    return random_name
+
+def delete_comfyui_image(image_name, base_url="http://127.0.0.1:8188"):
+    response = requests.delete(f"{base_url}/api-tools/v1/images/input/{image_name}")
+    response.raise_for_status()
 
 def parameterize_workflow(template_file_name: str, **params):
     from jinja2 import Template

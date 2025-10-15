@@ -1,7 +1,7 @@
 from comfy_script.runtime import load, nodes
 
 from tests.judge import check_image_statement
-from tests.tools import comfyui_free_memory
+from tests.comfyui_client import comfyui_free_memory
 
 
 def make_flux_t2i_workflow(prompt: str):
