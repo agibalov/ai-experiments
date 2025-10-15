@@ -10,10 +10,10 @@ def test_it_works():
         "video_wan2_2_14B_t2v.json.jinja",
         prompt="Huge fat tabby cat sitting on a wooden table",
         negative_prompt="text, watermark",
-        width=640,
-        height=640,
-        frames=81,
-        fps=16
+        width=320,
+        height=320,
+        frames=101,
+        fps=20
     )
     
     run_video_workflow(

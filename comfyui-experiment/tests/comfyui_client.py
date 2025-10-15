@@ -53,8 +53,6 @@ def parameterize_workflow(template_file_name: str, **params):
     return workflow
 
 def run_video_workflow(workflow_prompt, target_filename, max_wait=600, base_url="http://127.0.0.1:8188"):
-    import time
-    
     response = requests.post(f"{base_url}/prompt", 
                              json={"prompt": workflow_prompt})
     response.raise_for_status()
