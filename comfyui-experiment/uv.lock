@@ -175,6 +175,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "aiohttp" },
     { name = "comfy-script" },
+    { name = "jinja2" },
     { name = "nest-asyncio" },
     { name = "pillow" },
     { name = "pytest" },
@@ -189,6 +190,7 @@ dependencies = [
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.13.0" },
     { name = "comfy-script", specifier = ">=0.5.1" },
+    { name = "jinja2", specifier = ">=3.1.6" },
     { name = "nest-asyncio", specifier = ">=1.6.0" },
     { name = "pillow", specifier = ">=11.3.0" },
     { name = "pytest", specifier = ">=8.4.2" },
